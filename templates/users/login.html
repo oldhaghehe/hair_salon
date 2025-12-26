@@ -12,9 +12,12 @@
         Войти на сайт
       </div>
       <div class="card-body">
-        {% bootstrap_form form %}
-        <button type="submit" class="btn btn-primary">Войти</button>
-        <a href="{% url 'users:password_reset' %}" class="btn btn-link">Забыли пароль?</a>
+        <form method="post">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          <button type="submit" class="btn btn-primary">Войти</button>
+          <a href="{% url 'users:password_reset' %}" class="btn btn-link">Забыли пароль?</a>
+        </form>
       </div>
     </div>
   </div>

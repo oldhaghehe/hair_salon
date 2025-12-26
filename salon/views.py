@@ -3,21 +3,24 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
+from django.views import View
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView, TemplateView
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from .models import Service, Master, Appointment, User, Review
 from .forms import AppointmentForm, ReviewForm
 
 
-def load_services(request):
-    master_id = request.GET.get('master_id')
-    services = Service.objects.filter(masters__id=master_id).order_by('name')
-    return JsonResponse(list(services.values('id', 'name')), safe=False)
+class LoadServicesView(View):
+    def get(self, request, *args, **kwargs):
+        master_id = request.GET.get('master_id')
+        services = Service.objects.filter(masters__id=master_id).order_by('name')
+        return JsonResponse(list(services.values('id', 'name')), safe=False)
 
 
-def index(request):
-    return render(request, 'salon/index.html')
+class IndexView(TemplateView):
+    template_name = 'salon/index.html'
+
 
 
 class ServiceListView(ListView):

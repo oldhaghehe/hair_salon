@@ -5,7 +5,7 @@ from . import views
 app_name = 'salon'
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.IndexView.as_view(), name='index'),
     path('services/', views.ServiceListView.as_view(), name='services'),
     path('masters/', views.MasterListView.as_view(), name='masters'),
     path('masters/<int:pk>/', views.MasterDetailView.as_view(), name='master_detail'),
@@ -16,5 +16,5 @@ urlpatterns = [
     path('review/<int:pk>/edit/', views.ReviewUpdateView.as_view(), name='review_edit'),
     path('review/<int:pk>/delete/', views.ReviewDeleteView.as_view(), name='review_delete'),
     path('profile/<slug:slug>/', views.ProfileView.as_view(), name='profile'),
-    path('ajax/load-services/', views.load_services, name='ajax_load_services'),
+    path('ajax/load-services/', views.LoadServicesView.as_view(), name='ajax_load_services'),
 ]
