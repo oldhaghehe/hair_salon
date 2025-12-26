@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Ошибка 403{% endblock %}
+
+{% block page_title %}Ошибка 403 - Доступ запрещен{% endblock %}
+
+{% block content %}
+  <p>У вас нет прав для просмотра этой страницы.</p>
+  <p>CSRF токен недействителен или отсутствует.</p>
+  <a href="{% url 'salon:index' %}">Вернуться на главную</a>
+{% endblock %}

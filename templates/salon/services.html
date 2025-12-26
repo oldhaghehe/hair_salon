@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Прейскурант
+{% endblock %}
+
+{% block page_title %}
+  Наши услуги
+{% endblock %}
+
+{% block content %}
+  <div class="list-group">
+    {% for service in services %}
+      <a href="#" class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ service.name }}</h5>
+          <small>{{ service.price }} руб.</small>
+        </div>
+        <p class="mb-1">{{ service.description|truncatewords:30 }}</p>
+      </a>
+    {% empty %}
+      <p>Список услуг пуст. Администратор скоро все добавит!</p>
+    {% endfor %}
+  </div>
+
+  {% include 'includes/paginator.html' %}
+{% endblock %}

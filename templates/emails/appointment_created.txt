@@ -1,0 +1,13 @@
+Здравствуйте, {{ user.first_name|default:user.username }}!
+
+Вы успешно записались на услугу в нашем салоне.
+
+Детали вашей записи:
+- Услуга: {{ appointment.service.name }}
+- Мастер: {{ appointment.master.name }}
+- Дата и время: {{ appointment.date_time|date:"d.m.Y H:i" }}
+
+Спасибо, что выбрали нас!
+
+С уважением,
+Команда Hair Salon

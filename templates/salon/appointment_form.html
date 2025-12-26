@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block title %}
+  Запись на услугу
+{% endblock %}
+
+{% block page_title %}
+  Запись на услугу
+{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-8 p-5">
+      <div class="card">
+        <div class="card-header">
+          Форма записи
+        </div>
+        <div class="card-body">
+          <form method="post" id="appointmentForm" data-services-url="{% url 'salon:ajax_load_services' %}">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <button type="submit" class="btn btn-primary">Записаться</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const masterSelect = document.getElementById("id_master");
+    const serviceSelect = document.getElementById("id_service");
+    const form = document.getElementById("appointmentForm");
+    const url = form.getAttribute("data-services-url");
+
+    function loadServices() {
+      const masterId = masterSelect.value;
+      if (masterId) {
+        fetch(`${url}?master_id=${masterId}`)
+          .then(response => response.json())
+          .then(data => {
+            let options = '<option value="">---------</option>';
+            data.forEach(service => {
+              options += `<option value="${service.id}">${service.name}</option>`;
+            });
+            serviceSelect.innerHTML = options;
+          });
+      } else {
+        serviceSelect.innerHTML = '<option value="">---------</option>';
+      }
+    }
+
+    // Load services on page load if a master is already selected
+    if (masterSelect.value) {
+      loadServices();
+    }
+
+    // Load services on master change
+    masterSelect.addEventListener("change", loadServices);
+  });
+</script>
+{% endblock %}

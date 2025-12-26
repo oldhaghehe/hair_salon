@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Профиль {{ profile.username }}
+{% endblock %}
+
+{% block page_title %}
+  Профиль пользователя {{ profile.username }}
+{% endblock %}
+
+{% block content %}
+  <div class="mb-4">
+    <h4>Информация о пользователе</h4>
+    <p><strong>Имя:</strong> {{ profile.first_name }}</p>
+    <p><strong>Фамилия:</strong> {{ profile.last_name }}</p>
+    <p><strong>Email:</strong> {{ profile.email }}</p>
+    {% if request.user == profile %}
+      <a href="{% url 'users:profile_edit' %}" class="btn btn-primary">Редактировать профиль</a>
+      <a href="{% url 'users:password_change' %}" class="btn btn-secondary">Изменить пароль</a>
+    {% endif %}
+  </div>
+
+  <hr>
+
+  <h4>Мои записи</h4>
+  <div class="list-group">
+    {% for app in page_obj %}
+      <div class="list-group-item">
+        <h5 class="mb-1">Запись на {{ app.date_time|date:"d.m.Y H:i" }}</h5>
+        <p class="mb-1">
+          <strong>Мастер:</strong> {{ app.master.name }}<br>
+          <strong>Услуга:</strong> {{ app.service.name }}<br>
+          <strong>Статус:</strong> {{ app.get_status_display }}
+        </p>
+        {% if request.user == profile and app.status == 'PL' %}
+          <a href="{% url 'salon:appointment_edit' app.pk %}" class="btn btn-sm btn-primary">Редактировать</a>
+          <a href="{% url 'salon:appointment_delete' app.pk %}" class="btn btn-sm btn-danger">Отменить</a>
+        {% elif request.user == profile and app.status == 'CO' and not app.review %}
+          <a href="{% url 'salon:review_create' app.pk %}" class="btn btn-sm btn-success">Оставить отзыв</a>
+        {% elif app.review %}
+          <p class="mt-2"><strong>Ваш отзыв:</strong> "{{ app.review.text }}" (Оценка: {{ app.review.rating }})</p>
+          <a href="{% url 'salon:review_edit' app.review.pk %}" class="btn btn-sm btn-primary">Редактировать отзыв</a>
+          <a href="{% url 'salon:review_delete' app.review.pk %}" class="btn btn-sm btn-danger">Удалить отзыв</a>
+        {% endif %}
+      </div>
+    {% empty %}
+      <p>У вас пока нет записей.</p>
+    {% endfor %}
+  </div>
+
+  {% include 'includes/paginator.html' %}
+{% endblock %}

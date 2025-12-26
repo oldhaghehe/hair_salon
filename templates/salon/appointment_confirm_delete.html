@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Отмена записи
+{% endblock %}
+
+{% block page_title %}
+  Отмена записи
+{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-8 p-5">
+      <div class="card">
+        <div class="card-header">
+          Вы уверены, что хотите отменить запись?
+        </div>
+        <div class="card-body">
+          <p>
+            <strong>Мастер:</strong> {{ object.master.name }}<br>
+            <strong>Услуга:</strong> {{ object.service.name }}<br>
+            <strong>Дата:</strong> {{ object.date_time|date:"d.m.Y H:i" }}
+          </p>
+          <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Да, отменить</button>
+            <a href="{% url 'salon:profile' user.username %}" class="btn btn-secondary">Нет, вернуться</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

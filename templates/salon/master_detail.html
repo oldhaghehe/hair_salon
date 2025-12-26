@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  {{ master.name }}
+{% endblock %}
+
+{% block page_title %}
+  {{ master.name }}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-4">
+    {% if master.photo %}
+      <img src="{{ master.photo.url }}" class="img-fluid" alt="{{ master.name }}">
+    {% else %}
+      <img src="{% static 'img/placeholder.png' %}" class="img-fluid" alt="No photo">
+    {% endif %}
+  </div>
+  <div class="col-md-8">
+    <p>{{ master.bio }}</p>
+    <hr>
+    <h5>Услуги мастера:</h5>
+    <ul>
+      {% for master_service in master.master_services.all %}
+        <li>{{ master_service.service.name }} ({{ master_service.duration }} мин.) - {{ master_service.service.price }} руб.</li>
+      {% empty %}
+        <li>Этот мастер пока не оказывает услуг.</li>
+      {% endfor %}
+    </ul>
+    <hr>
+    <h5>Отзывы:</h5>
+    {% for review in master.reviews.all %}
+      <div class="card mb-2">
+        <div class="card-body">
+          <h6 class="card-title">{{ review.author.username }} (Оценка: {{ review.rating }})</h6>
+          <p class="card-text">{{ review.text }}</p>
+          <small class="text-muted">{{ review.created_at|date:"d.m.Y" }}</small>
+        </div>
+      </div>
+    {% empty %}
+      <p>Отзывов пока нет.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

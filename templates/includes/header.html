@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'salon:index' %}">Hair Salon</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'salon:services' %}">Услуги</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'salon:masters' %}">Мастера</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ms-auto">
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'salon:appointment_create' %}">Записаться</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'salon:profile' user.username %}">Профиль: {{ user.username }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'users:logout' %}">Выйти</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'users:login' %}">Войти</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'users:signup' %}">Регистрация</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

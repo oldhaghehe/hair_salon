@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Наши мастера
+{% endblock %}
+
+{% block page_title %}
+  Наши мастера
+{% endblock %}
+
+{% block content %}
+  <div class="row row-cols-1 row-cols-md-2 g-4">
+    {% for master in masters %}
+      <div class="col">
+        <div class="card h-100">
+          {% if master.photo %}
+            <img src="{{ master.photo.url }}" class="card-img-top" alt="{{ master.name }}">
+          {% else %}
+            <img src="{% static 'img/placeholder.png' %}" class="card-img-top" alt="No photo">
+          {% endif %}
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ master.name }}</h5>
+            <p class="card-text flex-grow-1">{{ master.bio|truncatewords:20 }}</p>
+            <a href="{% url 'salon:master_detail' master.pk %}" class="btn btn-primary mt-auto">Подробнее</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col">
+        <p>Список мастеров пуст. Администратор скоро все добавит!</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% include 'includes/paginator.html' %}
+{% endblock %}
