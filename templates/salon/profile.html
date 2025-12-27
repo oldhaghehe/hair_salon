@@ -30,6 +30,7 @@
         <p class="mb-1">
           <strong>Мастер:</strong> {{ app.master.name }}<br>
           <strong>Услуга:</strong> {{ app.service.name }}<br>
+          <strong>Цена:</strong> {{ app.service.price }} руб.<br>
           <strong>Статус:</strong> {{ app.get_status_display }}
         </p>
         {% if request.user == profile and app.status == 'PL' %}
